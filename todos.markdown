@@ -1,0 +1,3 @@
+* how should the controller action be set up? should it go into a sep. controller class? TriviaController? should the controller of the model that defines acts\_as\_trivia have a trivia action (and a view) that knows (from a hidden field) which trivia of the model class is to be rendered/assessed?
+* generate the gem and build it as a rails local gem into (vendor/gems). Use rake:unpack after the gem has been defined as a config.gem declaration.
+* the problem I run into again and again is that maybe trivia should be a model on its own but the associations need not be set up between _instances_ of the acts\_as\_trivia but between the class that has acts\_as\_trivia and the potential trivia class

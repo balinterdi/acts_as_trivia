@@ -12,9 +12,12 @@ module ActsAsTriviaRoutes
       sentinel = 'ActionController::Routing::Routes.draw do |map|'      
       unless options[:pretend]
         gsub_file 'config/routes.rb', /(#{Regexp.escape(sentinel)})/mi do |match|
-          %(#{match}\n  map.with_options(:controller => '#{file_name}_trivia') do |trivia|
-            #{new_routes}\n
-            end\n)
+<<-EOS
+#{match}
+  map.with_options(:controller => '#{file_name}_trivia') do |trivia|
+    #{new_routes}
+  end
+EOS
         end
       end    
   end

@@ -4,7 +4,7 @@
 
   then the following things will be generated
   
-  * a new trivia model
+  * a new trivia model OK
   
   class Trivia < ActiveRecord::Base
     def to\_param
@@ -12,12 +12,12 @@
     end
   end
 
-  * a new controller (if it does not exist yet)
+  * a new controller (if it does not exist yet) OK
   
   class TriviaController
   end
 
-  * new resource routes for trivia
+  * new resource routes for trivia OK
   
   map.resources :trivias
   
@@ -36,7 +36,7 @@
   
   * db migrations
   
-    * for the trivia class itself
+    * for the trivia class itself OK
     
       create_table :trivias, :force => true do |t|
         t.string  :on, :null => false
@@ -44,7 +44,7 @@
         t.timestamps
       end
   
-    * for the join model between the user and the trivia  
+    * for the join model between the user and the trivia OK
     
       create_table :trivia_answers, :force => true do |t|
         t.string  :trivia_id, :null => false

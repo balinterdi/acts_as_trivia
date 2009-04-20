@@ -1,59 +1,64 @@
-require 'rails_generator'
-
-module ActsAsTriviaRoutes
-    
-  def controller_routes(*questions)
-      new_routes = questions.map do |question|
-        "trivia.#{singular_name}_#{question}_trivia '/#{plural_name}/trivia/#{question}', :action => '#{question}'"
-      end.join("\n")
-      logger.route "map.with_options(:controller => '#{singular_name}_trivia') do |trivia|"
-
-      sentinel = 'ActionController::Routing::Routes.draw do |map|'      
-      unless options[:pretend]
-        gsub_file 'config/routes.rb', /(#{Regexp.escape(sentinel)})/mi do |match|
-<<-EOS
-#{match}
-  map.with_options(:controller => '#{singular_name}_trivia') do |trivia|
-    #{new_routes}
-  end
-EOS
-        end
-      end    
-  end
-       
-end
-
 class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
-    
+  
+  # this is snatched from the resource generator in the Rails source
+  default_options :skip_timestamps => false, :skip_migration => false
+
+  attr_reader   :controller_name,
+                :controller_class_path,
+                :controller_file_path,
+                :controller_class_nesting,
+                :controller_class_nesting_depth,
+                :controller_class_name,
+                :controller_singular_name,
+                :controller_plural_name
+  alias_method  :controller_file_name,  :controller_singular_name
+  alias_method  :controller_table_name, :controller_plural_name
+
+  def initialize(runtime_args, runtime_options = {})
+    super
+
+    @controller_name = @name.pluralize
+
+    base_name, @controller_class_path, @controller_file_path, @controller_class_nesting, @controller_class_nesting_depth = extract_modules(@controller_name)
+    @controller_class_name_without_nesting, @controller_singular_name, @controller_plural_name = inflect_names(base_name)
+
+    if @controller_class_nesting.empty?
+      @controller_class_name = @controller_class_name_without_nesting
+    else
+      @controller_class_name = "#{@controller_class_nesting}::#{@controller_class_name_without_nesting}"
+    end
+  end
+  
   def manifest
     record do |m|
-      # Check for class naming collisions.
-      m.class_collisions class_path, "#{class_name}TriviaController"
-
+      # Check whether the given class names are already taken by
+      # Ruby or Rails.  In the future, expand to check other namespaces
+      # such as the rest of the user's app.
+      m.class_collisions "Trivia", "TriviasController", "TriviaTest"
+      
       # Controller, helper, views, and spec directories.
-      m.directory File.join('app/controllers', class_path)
-      m.directory File.join('app/views', "#{singular_name}_trivia")
+      m.directory 'app/models/trivias'
+      m.directory 'app/controllers/trivias'
+      m.directory 'app/helpers/trivias'
+      m.directory 'app/views/trivias'
+      m.directory 'test/functional/trivias'
+      m.directory 'test/units/trivias'
+      
+      m.template 'model.rb', 'app/models/trivia.rb'
       
       # Controller spec, class, and helper.
-      m.template 'controller.rb', 
-        File.join('app/controllers', class_path, "#{singular_name}_trivia_controller.rb")
-      #TODO: generate content into the controller
+      m.template 'controller.rb', 'app/controllers/trivias_controller.rb'
       
-      #TODO: add the acts_as_trivia call into the model class
-      #TODO: generate the config.gem line ?
+      m.route_resources "trivia" # singular_name
       
-      m.controller_routes actions
-      
-      # view template for each action. (= for each trivia question)
-      actions.each do |action|
-        #TODO: strip invalid characters from action, make it filename like
-        # views/country_trivia/hdi.html.erb
-        path = File.join('app/views', class_path, "#{singular_name}_trivia", "#{action}.html.erb")
-        m.template 'view.html.erb', path,
-          :assigns => { :action => action, :path => path }
+      unless options[:skip_migration]
+        m.migration_template 'trivias_migration.rb', 'db/migrate', :assigns => {
+          :migration_name => "CreateTrivias"
+        }, :migration_file_name => "create_trivias"        
       end
+      
+      path = File.join('app/views/trivias/show.html.erb')
+      m.template 'view.html.erb', path
     end
   end
 end
-
-Rails::Generator::Commands::Base.send(:include, ActsAsTriviaRoutes)

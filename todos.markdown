@@ -1,24 +1,54 @@
-* retain the values in the dropdowns that the user chose
-* how should the controller action be set up? should it go into a sep. controller class? TriviaController? should the controller of the model that defines acts\_as\_trivia have a trivia action (and a view) that knows (from a hidden field) which trivia of the model class is to be rendered/assessed?
-* generate the gem and build it as a rails local gem into (vendor/gems). Use rake:unpack after the gem has been defined as a config.gem declaration.
-* the problem I run into again and again is that maybe trivia should be a model on its own but the associations need not be set up between _instances_ of the acts\_as\_trivia but between the class that has acts\_as\_trivia and the potential trivia class
-* this would have to be generated into view.html.erb
+* when the geneation script is called with the following:
 
-<% form_tag "#{singular_name}_#{action}_trivia_path"  do -%>
-  <% 3.times do -%>
-    <div>
-      <%= select_tag("#{singular_name}[#{action}][]", options_from_collection_for_select("@#{plural_name}", :id, :name)) %>
-    </div>
-  <% end -%>
-  <%= submit_tag "Submit" %>
-<% end %>
+  ./script/generate acts_as_trivia country hdi
 
-but it fails since it wants to evaluate form_tag during the generation. This also fails:
+  then the following things will be generated
+  
+  * a new trivia model
+  
+  class Trivia < ActiveRecord::Base
+    def to\_param
+      #{on}-#{about} # e.g country-hdi
+    end
+  end
 
-<%= "<% form_tag "#{singular_name}_#{action}_trivia_path"  do -%>" %>
+  * a new controller (if it does not exist yet)
+  
+  class TriviaController
+  end
 
-because <% %> tags can not be nested.
+  * new resource routes for trivia
+  
+  map.resources :trivias
+  
+  * in the model (country.rb):
 
-So it has to be written like this:
-
-'<'+"% form_tag ... do -%"+'>'
+  class Country < ActiveRecord::Base
+    acts_as_trivia :hdi
+    ...
+  end
+  
+  * added associations in the user model
+  
+  has_many :trivia_answers
+  has_many :trivias, :through => :trivia_answers
+  <!-- has_many :correct_trivia_answers, :through => :trivia_answers, :condition => { "state = ?", 'correct' }   -->
+  
+  * db migrations
+  
+    * for the trivia class itself
+    
+      create_table :trivias, :force => true do |t|
+        t.string  :on, :null => false
+        t.string  :about, :null => false
+        t.timestamps
+      end
+  
+    * for the join model between the user and the trivia  
+    
+      create_table :trivia_answers, :force => true do |t|
+        t.string  :trivia_id, :null => false
+        t.string  :user_id, :null => false
+        t.integer :points # how many points the user received for his answer
+      end
+    

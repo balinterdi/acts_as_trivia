@@ -13,10 +13,25 @@ module ActsAsTriviaAddedContent
       gsub_file File.join("app/models", class_path, "#{singular_name}.rb"), /(#{Regexp.escape(sentinel)})/mi do |match|
 <<-EOS
 #{match}
-#{acts_as_trivia_calls.join("\n")}
+  #{acts_as_trivia_calls.join("\n")}
 EOS
       end
     end
+  end
+
+  def user_associations
+    sentinel = "class User < ActiveRecord::Base"
+    logger.modify "has_many :trivia_answers"
+    unless options[:pretend]
+      gsub_file File.join("app/models/user.rb"), /(#{Regexp.escape(sentinel)})/mi do |match|
+<<-EOS
+#{match}
+  has_many :trivia_answers
+  has_many :trivias, :through => :trivia_answers
+EOS
+      end
+    end
+
   end
 
 end
@@ -75,6 +90,8 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       m.route_resources "trivia" # singular_name
 
       m.model_acts_as_trivia_includes actions
+      m.user_associations
+
       unless options[:skip_migration]
         m.migration_template 'trivias_migration.rb', 'db/migrate', :assigns => {
           :migration_name => "CreateTrivias"

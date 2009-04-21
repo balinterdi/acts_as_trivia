@@ -21,7 +21,7 @@
   
   map.resources :trivias
   
-  * in the model (country.rb):
+  * in the model (country.rb) OK:
 
   class Country < ActiveRecord::Base
     acts_as_trivia :hdi

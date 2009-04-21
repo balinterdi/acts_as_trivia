@@ -1,5 +1,28 @@
+require 'rails_generator'
+
+module ActsAsTriviaAddedContent
+
+  def model_acts_as_trivia_includes(questions)
+    acts_as_trivia_calls = questions.map do |question|
+      "acts_as_trivia :#{question}"
+    end
+    logger.modify acts_as_trivia_calls.join(", ")
+
+    sentinel = "class #{class_name} < ActiveRecord::Base"
+    unless options[:pretend]
+      gsub_file File.join("app/models", class_path, "#{singular_name}.rb"), /(#{Regexp.escape(sentinel)})/mi do |match|
+<<-EOS
+#{match}
+#{acts_as_trivia_calls.join("\n")}
+EOS
+      end
+    end
+  end
+
+end
+
 class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
-  
+
   # this is snatched from the resource generator in the Rails source
   default_options :skip_timestamps => false, :skip_migration => false
 
@@ -28,14 +51,14 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       @controller_class_name = "#{@controller_class_nesting}::#{@controller_class_name_without_nesting}"
     end
   end
-  
+
   def manifest
     record do |m|
       # Check whether the given class names are already taken by
       # Ruby or Rails.  In the future, expand to check other namespaces
       # such as the rest of the user's app.
       m.class_collisions "Trivia", "TriviasController", "TriviaTest"
-      
+
       # Controller, helper, views, and spec directories.
       m.directory 'app/models/trivias'
       m.directory 'app/controllers/trivias'
@@ -43,22 +66,25 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       m.directory 'app/views/trivias'
       m.directory 'test/functional/trivias'
       m.directory 'test/units/trivias'
-      
+
       m.template 'model.rb', 'app/models/trivia.rb'
-      
+
       # Controller spec, class, and helper.
       m.template 'controller.rb', 'app/controllers/trivias_controller.rb'
-      
+
       m.route_resources "trivia" # singular_name
-      
+
+      m.model_acts_as_trivia_includes actions
       unless options[:skip_migration]
         m.migration_template 'trivias_migration.rb', 'db/migrate', :assigns => {
           :migration_name => "CreateTrivias"
-        }, :migration_file_name => "create_trivias"        
+        }, :migration_file_name => "create_trivias"
       end
-      
+
       path = File.join('app/views/trivias/show.html.erb')
       m.template 'view.html.erb', path
     end
   end
 end
+
+Rails::Generator::Commands::Base.send(:include, ActsAsTriviaAddedContent)

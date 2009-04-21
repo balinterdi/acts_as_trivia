@@ -87,7 +87,7 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       # Controller spec, class, and helper.
       m.template 'controller.rb', 'app/controllers/trivias_controller.rb'
 
-      m.route_resources "trivia" # singular_name
+      m.route_resources "trivias"
 
       m.model_acts_as_trivia_includes actions
       m.user_associations

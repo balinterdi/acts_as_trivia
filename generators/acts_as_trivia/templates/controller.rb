@@ -1,4 +1,4 @@
-class TriviaController < ApplicationController
+class TriviasController < ApplicationController
   def show
   end
 end

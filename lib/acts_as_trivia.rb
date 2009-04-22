@@ -1,3 +1,5 @@
+require "acts_as_trivia/trivia"
+
 module ActsAsTrivia
   module ClassMethods
     def acts_as_trivia(method)

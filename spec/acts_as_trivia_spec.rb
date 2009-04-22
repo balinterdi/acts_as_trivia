@@ -10,20 +10,33 @@ Spec::Runner.configure do |config|
   config.mock_with :mocha
 end
 
+class Country < ActiveRecord::Base
+  include ActsAsTrivia
+end
+
+describe "A Trivia" do
+  before do
+    rebuild_trivias_table
+    rebuild_countries_table
+    @trivia = Trivia.create(:on => "country", :about => "hdi")
+  end
+  
+  it "should call the appropriate class's trivia assessment" do
+    answers = [1, 2, 3]
+    Country.expects(:assess_trivia).with(:hdi, answers).returns(3)
+    Trivia.assess(answers)
+  end
+end
+
 describe "An acts_as_trivia enabled model class" do
   before do
-    class Country
-      include ActsAsTrivia
-      
-      attr_accessor :hdi
-      def initialize(hdi)
-        @hdi = hdi
-      end      
+    rebuild_countries_table
+    Country.class_eval do
       acts_as_trivia :hdi
     end
-    @iceland = Country.new(0.968)
-    @canada = Country.new(0.967)
-    @new_zealand = Country.new(0.944)
+    @iceland = Country.create(:hdi => 0.968)
+    @canada = Country.create(:hdi => 0.967)
+    @new_zealand = Country.create(:hdi => 0.944)
   end
   
   it "should respond to the generated trivia accessor" do

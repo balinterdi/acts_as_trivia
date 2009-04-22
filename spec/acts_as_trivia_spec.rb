@@ -24,7 +24,7 @@ describe "A Trivia" do
   it "should call the appropriate class's trivia assessment" do
     answers = [1, 2, 3]
     Country.expects(:assess_trivia).with(:hdi, answers).returns(3)
-    Trivia.assess(answers)
+    @trivia.assess(answers)
   end
 end
 

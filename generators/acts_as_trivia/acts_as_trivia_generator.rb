@@ -2,6 +2,24 @@ require 'rails_generator'
 
 module ActsAsTriviaAddedContent
 
+  def route_trivia_answers_as_nested_resource
+    sentinel = "ActionController::Routing::Routes.draw do |map|"
+    unless options[:pretend]
+      gsub_file "config/routes.rb", /(#{Regexp.escape(sentinel)})/mi do |match|
+<<-EOS
+#{match}
+  map.resources :users do |users|
+    users.resources :trivias do |trivias|
+      trivias.resources :trivia_answers
+    end
+  end
+  
+EOS
+      end
+    end
+    
+  end
+  
   def model_acts_as_trivia_includes(questions)
     acts_as_trivia_calls = questions.map do |question|
       "acts_as_trivia :#{question}"
@@ -85,9 +103,11 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       # m.template 'model.rb', 'app/models/trivia.rb'
 
       # Controller spec, class, and helper.
-      m.template 'controller.rb', 'app/controllers/trivias_controller.rb'
+      m.template 'trivias_controller.rb', 'app/controllers/trivias_controller.rb'
+      m.template 'trivia_answers_controller.rb', 'app/controllers/trivia_answers_controller.rb'
 
       m.route_resources "trivias"
+      m.route_trivia_answers_as_nested_resource
 
       m.model_acts_as_trivia_includes actions
       m.user_associations

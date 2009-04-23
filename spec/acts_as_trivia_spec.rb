@@ -19,12 +19,26 @@ describe "A Trivia" do
     rebuild_trivias_table
     rebuild_countries_table
     @trivia = Trivia.create(:on => "country", :about => "hdi")
+    Country.class_eval do
+      acts_as_trivia :hdi
+    end    
   end
   
-  it "should call the appropriate class's trivia assessment" do
-    answers = [1, 2, 3]
-    Country.expects(:assess_trivia).with(:hdi, answers).returns(3)
-    @trivia.assess(answers)
+  describe "when assessed" do
+    before do
+    end
+    it "should call the appropriate class's assessment" do
+      answers = [1, 2, 3]
+      Country.expects(:assess_trivia).with(:hdi, answers).returns(3)
+      @trivia.assess(answers)
+    end
+    it "should compare as many items as there are in the user's answer" do
+      pending
+      #TODO: should cast the answers (an array to a ActiveRecord::NamedScope::Scope)
+      answers = (1..10).map { Country.create }
+      Country.stubs(:trivia_answer_for).returns(answers)
+      @trivia.assess(answers).length.should == 10
+    end
   end
   
   it "should get the trivia subjects of the right class" do
@@ -49,11 +63,6 @@ describe "An acts_as_trivia enabled model class" do
   
   it "should respond to the generated trivia accessor" do
     Country.should respond_to(:trivia_answer_for)
-  end
-  
-  it "should use the find method of the model class" do
-    Country.expects(:find).returns([@iceland, @canada, @new_zealand])
-    countries_by_hdi = Country.trivia_answer_for(:hdi)
   end
   
   describe "when assessing the answer" do

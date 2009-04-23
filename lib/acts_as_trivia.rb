@@ -6,11 +6,11 @@ module ActsAsTrivia
     def acts_as_trivia(method)
       class << self
         define_method(:trivia_answer_for) do |name|
-          self.find(:all, :order => "#{name} DESC", :limit => 5)
+          self.scoped(:order => "#{name} DESC")
         end
         
         define_method(:assess_trivia) do |name, answer|
-          correct_answer = trivia_answer_for(name)
+          correct_answer = trivia_answer_for(name).scoped(:limit => answer.length)
           score = 0
           answer.each_with_index do |elt, idx|
             score += elt == correct_answer[idx] ? 1 : 0

@@ -7,6 +7,10 @@ class Trivia < ActiveRecord::Base
     trivia_link_class.assess_trivia(about.to_sym, answer)
   end
   
+  def get_subjects
+    trivia_link_class.find(:all)
+  end
+  
   private
   def trivia_link_class
     on.capitalize.constantize

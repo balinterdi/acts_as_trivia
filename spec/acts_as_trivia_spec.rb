@@ -26,6 +26,14 @@ describe "A Trivia" do
     Country.expects(:assess_trivia).with(:hdi, answers).returns(3)
     @trivia.assess(answers)
   end
+  
+  it "should get the trivia subjects of the right class" do
+    @iceland = Country.create(:hdi => 0.968)
+    @canada = Country.create(:hdi => 0.967)
+    Country.expects(:find).with(:all).returns([@iceland, @canada])
+    @trivia.get_subjects
+  end
+  
 end
 
 describe "An acts_as_trivia enabled model class" do

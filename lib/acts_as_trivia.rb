@@ -17,6 +17,7 @@ module ActsAsTrivia
           end
           score
         end
+        
       end
     end
   end

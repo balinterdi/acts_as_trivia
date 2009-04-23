@@ -101,8 +101,8 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       # m.template 'model.rb', 'app/models/trivia.rb'
 
       # Controller spec, class, and helper.
-      m.template 'trivias_controller.rb', 'app/controllers/trivias_controller.rb'
-      m.template 'trivia_answers_controller.rb', 'app/controllers/trivia_answers_controller.rb'
+      m.template 'controller.rb', 'app/controllers/trivias_controller.rb'
+      m.template 'answers_controller.rb', 'app/controllers/trivia_answers_controller.rb'
       m.template 'helper.rb', 'app/helpers/trivias_helper.rb'
       
       m.route_resources "trivias"

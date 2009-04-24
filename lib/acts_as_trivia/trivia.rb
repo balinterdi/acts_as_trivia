@@ -2,7 +2,7 @@ class Trivia < ActiveRecord::Base
   has_many :trivia_answers
   
   def to_param
-    "#{on}-#{about}"
+    "#{id}-#{on}-#{about}"
   end
   
   def assess(answer)

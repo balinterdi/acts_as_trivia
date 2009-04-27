@@ -18,6 +18,7 @@ def rebuild_trivias_table
   ActiveRecord::Base.connection.create_table :trivias, :force => true do |table|
     table.column :on, :string
     table.column :about, :string
+    table.column :displayed, :string
   end
 end
 
@@ -34,6 +35,7 @@ def rebuild_countries_table
     table.column :hdi, :float
     table.column :population, :integer
     table.column :area, :integer
+    table.column :name, :string
   end
 end
 

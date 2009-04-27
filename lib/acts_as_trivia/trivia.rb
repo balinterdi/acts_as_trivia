@@ -13,6 +13,11 @@ class Trivia < ActiveRecord::Base
     trivia_link_class.find(:all)
   end
   
+  def get_solution_values
+    solution = trivia_link_class.trivia_answer_for(about)
+    solution.map { |elt| [elt.send(displayed.to_sym), elt.send(about.to_sym)] }
+  end
+  
   private
   def trivia_link_class
     on.capitalize.constantize

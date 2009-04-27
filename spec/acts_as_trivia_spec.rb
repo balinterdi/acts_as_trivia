@@ -18,10 +18,13 @@ describe "A Trivia" do
   before do
     rebuild_trivias_table
     rebuild_countries_table
-    @trivia = Trivia.create(:on => "country", :about => "hdi")
+    @trivia = Trivia.create(:on => "country", :about => "hdi", :displayed => "name")
     Country.class_eval do
       acts_as_trivia :hdi
     end
+    @iceland = Country.create(:hdi => 0.968, :name => "Iceland")
+    @canada = Country.create(:hdi => 0.967, :name => "Canada")
+    @new_zealand = Country.create(:hdi => 0.944, :name => "New Zealand")
   end
 
   describe "when assessed" do
@@ -42,10 +45,12 @@ describe "A Trivia" do
   end
 
   it "should get the trivia subjects of the right class" do
-    @iceland = Country.create(:hdi => 0.968)
-    @canada = Country.create(:hdi => 0.967)
-    Country.expects(:find).with(:all).returns([@iceland, @canada])
+    Country.expects(:find).with(:all).returns([@iceland, @canada, @new_zealand])
     @trivia.get_subjects
+  end
+  
+  it "should be able to fetch the solution" do
+    @trivia.get_solution_values.should == [["Iceland", 0.968], ["Canada", 0.967], ["New Zealand", 0.944]]
   end
 
 end

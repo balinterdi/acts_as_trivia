@@ -1,5 +1,6 @@
 require "acts_as_trivia/trivia"
 require "acts_as_trivia/trivia_answer"
+require "acts_as_trivia/user"
 
 module ActsAsTrivia
   module ClassMethods

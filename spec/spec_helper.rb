@@ -21,10 +21,31 @@ def rebuild_trivias_table
   end
 end
 
+def rebuild_trivia_answers_table
+  ActiveRecord::Base.connection.create_table :trivia_answers, :force => true do |table|
+    table.column :user_id, :string
+    table.column :trivia_id, :string
+    table.column :points, :integer, :default => 0
+  end
+end
+
 def rebuild_countries_table
   ActiveRecord::Base.connection.create_table :countries, :force => true do |table|
     table.column :hdi, :float
     table.column :population, :integer
     table.column :area, :integer
   end
+end
+
+def rebuild_users_table
+  ActiveRecord::Base.connection.create_table :users, :force => true do |table|
+    table.column :login, :string
+  end  
+end
+
+def rebuild_all_tables
+  rebuild_trivias_table
+  rebuild_trivia_answers_table
+  rebuild_countries_table
+  rebuild_users_table
 end

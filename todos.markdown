@@ -1,11 +1,8 @@
+* sort out migrations
 * the show page of the trivia answer should show the solution of the trivia and mark which ones the user got right. After a user answered a trivia question, the redirect should land here. So does the answer have to be stored in the TriviaAnswer instance to make this detailed assessment? The other solution is to tell him how many he got right and then have a link to the trivia where the solution is presented.
 The solution should not be stored in the trivia answer. Rather, the show action of the trivia should show the correct solution and the page should only be shown to users who have already played that trivia.
 
-* add the following methods to the user:
-
-  * add_trivia(trivia)
-  * played_trivia?(trivia)
-  * trivia_points
+* the trivia will have to include how many items has to be asserted (that is, the length of the trivia) since that has to be known on many screens. A sensitive default can be three. Rewrite methods where an actual number is written instead of this value.
 
 * generate a migration that creates the trivia record(s) itself (themselves)
 

@@ -3,6 +3,7 @@ class <%= migration_name %> < ActiveRecord::Migration
     create_table :trivias do |t|
       t.string :on, :null => false
       t.string :about, :null => false
+      t.string :displayed, :null => false
 <% unless options[:skip_timestamps] %>
       t.timestamps
 <% end -%>

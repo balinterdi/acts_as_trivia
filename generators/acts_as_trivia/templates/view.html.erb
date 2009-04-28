@@ -1,12 +1,1 @@
-<h1>Rank <%= plural_name %> by descending order of their <%= action %></h1>
 
-<%= '<'+"% form_tag #{singular_name}_#{action}_trivia_path  do -%"+">\n"+
-  '<'+"% 3.times do -%"+">\n"+
-    "<div>\n"+
-      '<'+%(%= select_tag("#{singular_name}[#{action}][]", options_from_collection_for_select(@#{plural_name}, :id, :name)) %)+">\n"+
-    "</div>\n"+
-  '<'+"% end -%"+">\n"+
-  '<'+"%= submit_tag 'Submit' %"+">\n"+
-'<'+"% end %"+">\n"
-
-%> 

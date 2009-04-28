@@ -1,7 +1,4 @@
-class <%= class_name %>TriviaController < ApplicationController
-<% for action in actions -%>
-  def <%= action %>
+class TriviasController < ApplicationController
+  def show
   end
-
-<% end -%>
 end

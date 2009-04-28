@@ -3,7 +3,7 @@ Description:
     The acts_as_trivia generator will generate a controller for the model class that is given as the first parameter. For each action (trivia question) passed in the command line it will also generate a view with the corresponding name, a route in the routes file and the acts_as_trivia line itself in the model.
     
 Example:
-    ./script/generate acts_as_trivia country hdi population gdp
+    ./script/generate acts_as_trivia country hdi name
         ...
         create  app/controllers/country_trivia_controller.rb
         create  app/views/country_trivia/hdi.html.erb

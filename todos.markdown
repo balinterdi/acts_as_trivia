@@ -1,24 +1,21 @@
-* retain the values in the dropdowns that the user chose
-* how should the controller action be set up? should it go into a sep. controller class? TriviaController? should the controller of the model that defines acts\_as\_trivia have a trivia action (and a view) that knows (from a hidden field) which trivia of the model class is to be rendered/assessed?
-* generate the gem and build it as a rails local gem into (vendor/gems). Use rake:unpack after the gem has been defined as a config.gem declaration.
-* the problem I run into again and again is that maybe trivia should be a model on its own but the associations need not be set up between _instances_ of the acts\_as\_trivia but between the class that has acts\_as\_trivia and the potential trivia class
-* this would have to be generated into view.html.erb
+TODO
+====
 
-<% form_tag "#{singular_name}_#{action}_trivia_path"  do -%>
-  <% 3.times do -%>
-    <div>
-      <%= select_tag("#{singular_name}[#{action}][]", options_from_collection_for_select("@#{plural_name}", :id, :name)) %>
-    </div>
-  <% end -%>
-  <%= submit_tag "Submit" %>
-<% end %>
+* get the trivia views use the trivias_helper.rb file and so helper.rb does not have to be generated into the host app's code
+* the show action of the trivia should show the correct solution and the page should only be shown to users who have already played that trivia.
+* the trivia will have to include how many items has to be asserted (that is, the length of the trivia) since that has to be known on many screens. A sensitive default can be three. Rewrite methods where an actual number is written instead of this value.  
+* a user should not be able to answer a question more than once
+* set up a template to generate a country-trivia site for quick testing
 
-but it fails since it wants to evaluate form_tag during the generation. This also fails:
+DONE
+====
 
-<%= "<% form_tag "#{singular_name}_#{action}_trivia_path"  do -%>" %>
+* the show page of the trivia answer should show the solution of the trivia and mark which ones the user got right. After a user answered a trivia question, the redirect should land here. So does the answer have to be stored in the TriviaAnswer instance to make this detailed assessment? The other solution is to tell him how many he got right and then have a link to the trivia where the solution is presented.
+The solution should not be stored in the trivia answer. Rather, the show action of the trivia should show the correct solution and the page should only be shown to users who have already played that trivia.
 
-because <% %> tags can not be nested.
+* generate a migration that creates the trivia record(s) itself (themselves)
 
-So it has to be written like this:
+    e.g Trivia.create(:on => "country", :about => "hdi")
+    
+  This generator can be another one since this one should be called for each subsequent trivia question the developer comes up with.
 
-'<'+"% form_tag ... do -%"+'>'

@@ -96,9 +96,8 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       unless options[:skip_migration]
         m.migration_template 'trivias_migration.rb', 'db/migrate', :assigns => {
           :migration_name => "CreateTrivias",
-          :trivia_enabled_class => class_name,
-          :trivia_entity => singular_name,
-          :trivia_question_on => actions.first,
+          :trivia_on => singular_name,
+          :trivia_about => actions.first,
           :trivia_displayed => actions.last,
         }, :migration_file_name => "create_trivias"
       end

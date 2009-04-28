@@ -1,0 +1,8 @@
+Description:
+  
+  The acts_as_trivia_record generator creates a trivia record in the database. It should be passed the class on which the trivia operates, the attribute which is the basis of the ranking and the attribute which is displayed when the trivia question is presented.
+  
+  Example:
+      ./script/generate acts_as_trivia_record country population name
+          ...
+  

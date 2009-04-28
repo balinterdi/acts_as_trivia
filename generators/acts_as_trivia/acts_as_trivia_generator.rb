@@ -37,21 +37,6 @@ EOS
     end
   end
 
-  def user_associations
-    sentinel = "class User < ActiveRecord::Base"
-    logger.modify "has_many :trivia_answers"
-    unless options[:pretend]
-      gsub_file File.join("app/models/user.rb"), /(#{Regexp.escape(sentinel)})/mi do |match|
-<<-EOS
-#{match}
-  has_many :trivia_answers
-  has_many :trivias, :through => :trivia_answers
-EOS
-      end
-    end
-
-  end
-
 end
 
 class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
@@ -107,11 +92,14 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       m.route_trivia_answers_as_nested_resource
 
       m.model_acts_as_trivia_includes actions
-      m.user_associations
 
       unless options[:skip_migration]
         m.migration_template 'trivias_migration.rb', 'db/migrate', :assigns => {
-          :migration_name => "CreateTrivias"
+          :migration_name => "CreateTrivias",
+          :trivia_enabled_class => class_name,
+          :trivia_entity => singular_name,
+          :trivia_question_on => actions.first,
+          :trivia_displayed => actions.last,
         }, :migration_file_name => "create_trivias"
       end
 

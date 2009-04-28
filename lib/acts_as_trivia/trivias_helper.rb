@@ -1,9 +1,7 @@
-#TODO: move these to the trivias_helper.rb file so that they do not have to
-# be generated into the host app's code
 module TriviasHelper
   def trivia_dropdown(trivia)
     #TODO: the get_subjects call will query all instances of a model class (e.g Country.find(:all))
-    # that may be exhaustive, even though Rails only executes the first and returns the cached result after
+    # that may be exhaustive, even though Rails only executes it the first time and returns the cached result after
     select_tag("#{trivia.on}[#{trivia.about}][]", options_from_collection_for_select(trivia.get_subjects, :id, trivia.displayed.to_sym))
   end
   
@@ -13,5 +11,4 @@ module TriviasHelper
       yield i+1, name, value
     end
   end
-  
 end

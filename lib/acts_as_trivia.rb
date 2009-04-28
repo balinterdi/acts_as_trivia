@@ -34,3 +34,9 @@ end
 if Object.const_defined?("ActiveRecord")
   ActiveRecord::Base.send(:include, ActsAsTrivia)
 end
+
+#NOTE: at this point, the controllers of the app (e.g TriviaAnswersController) are not yet defined
+# so the helpers can not be included. On the other hand, if I define the controller class here
+# the controller will not be defined in the app and so the actions will not be available.
+# Thus the autoload solution.
+autoload :TriviaAnswersController, "acts_as_trivia/trivia_answers_controller"

@@ -14,7 +14,7 @@ class Trivia < ActiveRecord::Base
   end
   
   def get_solution_values
-    solution = trivia_link_class.trivia_answer_for(about)
+    solution = trivia_link_class.trivia_answer_for(about).scoped(:limit => length)
     solution.map { |elt| [elt.send(displayed.to_sym), elt.send(about.to_sym)] }
   end
   

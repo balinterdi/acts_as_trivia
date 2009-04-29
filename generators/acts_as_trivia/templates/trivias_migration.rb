@@ -4,6 +4,7 @@ class <%= migration_name %> < ActiveRecord::Migration
       t.string :on, :null => false
       t.string :about, :null => false
       t.string :displayed, :null => false
+      t.integer :length, :default => 3, :null => false
 <% unless options[:skip_timestamps] %>
       t.timestamps
 <% end -%>

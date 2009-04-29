@@ -18,13 +18,14 @@ describe "A Trivia" do
   before do
     rebuild_trivias_table
     rebuild_countries_table
-    @trivia = Trivia.create(:on => "country", :about => "hdi", :displayed => "name")
+    @trivia = Trivia.create(:on => "country", :about => "hdi", :displayed => "name", :length => 3)
     Country.class_eval do
       acts_as_trivia :hdi
     end
     @iceland = Country.create(:hdi => 0.968, :name => "Iceland")
     @canada = Country.create(:hdi => 0.967, :name => "Canada")
     @new_zealand = Country.create(:hdi => 0.944, :name => "New Zealand")
+    @cyprus = Country.create(:hdi => 0.903, :name => "Cyprus")
   end
 
   describe "when assessed" do
@@ -48,9 +49,17 @@ describe "A Trivia" do
     Country.expects(:find).with(:all).returns([@iceland, @canada, @new_zealand])
     @trivia.get_subjects
   end
-  
-  it "should be able to fetch the solution" do
-    @trivia.get_solution_values.should == [["Iceland", 0.968], ["Canada", 0.967], ["New Zealand", 0.944]]
+
+  describe "fetching the solution" do
+    before do
+      @solution = @trivia.get_solution_values
+    end
+    it "should have the length of the trivia" do
+      @solution.should have(3).items
+    end
+    it "should fetch the correct one" do
+      @solution.should eql([["Iceland", 0.968], ["Canada", 0.967], ["New Zealand", 0.944]])
+    end    
   end
 
 end
@@ -120,7 +129,7 @@ describe "a user" do
 
   it "should have 0 trivia points when he has not played any trivia" do
     @user.trivia_answers = []
-    @user.trivia_points.should == 0
+    @user.trivia_points.should eql(0)
   end
 
   it "should be able to tell the total trivia points he earned" do
@@ -128,7 +137,7 @@ describe "a user" do
     another_trivia = Trivia.create(:on => "country", :about => "population")
     @user.trivia_answers.create(:trivia => a_trivia, :points => 2)
     @user.trivia_answers.create(:trivia => another_trivia, :points => 3)
-    @user.trivia_points.should == 5
+    @user.trivia_points.should eql(5)
   end
 
 end

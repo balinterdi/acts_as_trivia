@@ -19,6 +19,7 @@ def rebuild_trivias_table
     table.column :on, :string
     table.column :about, :string
     table.column :displayed, :string
+    table.column :length, :integer
   end
 end
 

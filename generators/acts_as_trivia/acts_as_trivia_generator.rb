@@ -76,7 +76,7 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       # Ruby or Rails.  In the future, expand to check other namespaces
       # such as the rest of the user's app.
       # m.class_collisions "Trivia", "TriviaAnswer"
-      m.class_collisions "TriviasController", "TriviaAnswersController"
+      # m.class_collisions "TriviasController", "TriviaAnswersController"
       m.class_collisions "TriviaTest"
 
       # Controller directories.

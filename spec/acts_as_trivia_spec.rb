@@ -28,20 +28,31 @@ describe "A Trivia" do
     @cyprus = Country.create(:hdi => 0.903, :name => "Cyprus")
   end
 
-  describe "when assessed" do
+  describe "when assessing the answer" do
     before do
+
     end
-    it "should call the appropriate class's assessment" do
-      answers = [1, 2, 3]
-      Country.expects(:assess_trivia).with(:hdi, answers).returns(3)
-      @trivia.assess(answers)
+
+  end
+
+  describe "when assessing" do
+    before do
+      Country.expects(:find).returns([@iceland, @canada, @new_zealand])
     end
-    it "should compare as many items as there are in the user's answer" do
-      pending
-      #TODO: should cast the answers (an array to a ActiveRecord::NamedScope::Scope)
-      answers = (1..10).map { Country.create }
-      Country.stubs(:trivia_answer_for).returns(answers)
-      @trivia.assess(answers).length.should == 10
+
+    it "should give top score for the correct one" do
+      score = @trivia.assess_answer([@iceland, @canada, @new_zealand])
+      score.should equal(3)
+    end
+
+    it "should give a point for each correct position" do
+      score = @trivia.assess_answer([@canada, @iceland, @new_zealand])
+      score.should equal(1)
+    end
+
+    it "should return zero if none of the positions is asserted" do
+      score = @trivia.assess_answer([@canada, @new_zealand, @iceland])
+      score.should equal(0)
     end
   end
 
@@ -59,7 +70,7 @@ describe "A Trivia" do
     end
     it "should fetch the correct one" do
       @solution.should eql([["Iceland", 0.968], ["Canada", 0.967], ["New Zealand", 0.944]])
-    end    
+    end
   end
 
 end
@@ -77,27 +88,6 @@ describe "An acts_as_trivia enabled model class" do
 
   it "should respond to the generated trivia accessor" do
     Country.should respond_to(:trivia_answer_for)
-  end
-
-  describe "when assessing the answer" do
-    before do
-      Country.expects(:find).returns([@iceland, @canada, @new_zealand])
-    end
-
-    it "should give top score for the correct one" do
-      score = Country.assess_trivia(:hdi, [@iceland, @canada, @new_zealand])
-      score.should equal(3)
-    end
-
-    it "should give a point for each correct position" do
-      score = Country.assess_trivia(:hdi, [@canada, @iceland, @new_zealand])
-      score.should equal(1)
-    end
-
-    it "should return zero if none of the positions is asserted" do
-      score = Country.assess_trivia(:hdi, [@canada, @new_zealand, @iceland])
-      score.should equal(0)
-    end
   end
 end
 

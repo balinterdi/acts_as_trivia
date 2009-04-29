@@ -5,8 +5,13 @@ class Trivia < ActiveRecord::Base
     "#{id}-#{on}-#{about}"
   end
   
-  def assess(answer)
-    trivia_link_class.assess_trivia(about.to_sym, answer)
+  def assess_answer(answer)
+    correct_answer = get_solution.scoped(:limit => answer.length)
+    score = 0
+    answer.each_with_index do |elt, idx|
+      score += elt == correct_answer[idx] ? 1 : 0
+    end
+    score
   end
   
   def get_subjects
@@ -14,11 +19,14 @@ class Trivia < ActiveRecord::Base
   end
   
   def get_solution_values
-    solution = trivia_link_class.trivia_answer_for(about).scoped(:limit => length)
+    solution = get_solution.scoped(:limit => length)
     solution.map { |elt| [elt.send(displayed.to_sym), elt.send(about.to_sym)] }
   end
   
   private
+  def get_solution
+    trivia_link_class.trivia_answer_for(about.to_sym)
+  end
   def trivia_link_class
     on.capitalize.constantize
   end

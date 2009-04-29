@@ -28,13 +28,6 @@ describe "A Trivia" do
     @cyprus = Country.create(:hdi => 0.903, :name => "Cyprus")
   end
 
-  describe "when assessing the answer" do
-    before do
-
-    end
-
-  end
-
   describe "when assessing" do
     before do
       Country.expects(:find).returns([@iceland, @canada, @new_zealand])
@@ -75,6 +68,24 @@ describe "A Trivia" do
 
 end
 
+describe "A TriviaAnswer" do
+  before do
+    rebuild_all_tables
+    @user = User.create(:login => "bob")
+    @trivia = Trivia.create(:on => "country", :about => "hdi", :displayed => "name", :length => 3)    
+    @trivia_answer = TriviaAnswer.create(:user => @user, :trivia => @trivia)
+  end
+  
+  describe "being assessed" do
+    before do
+      @trivia.expects(:assess_answer).returns(2)
+    end
+    it "should delegate assessment to the trivia" do
+      @trivia_answer.assess([1, 2, 3]).should equal(2)
+    end
+  end
+end
+
 describe "An acts_as_trivia enabled model class" do
   before do
     rebuild_countries_table
@@ -99,7 +110,7 @@ describe "a user" do
       has_many :trivias, :through => :trivia_answers
     end
     @user = User.create(:login => "bob")
-    @trivia = Trivia.create(:on => "country", :about => "hdi")
+    @trivia = Trivia.create(:on => "country", :about => "hdi", :displayed => "name", :length => 3)
   end
 
   it "should be easily added a trivia he played" do

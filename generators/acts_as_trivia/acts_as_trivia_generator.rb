@@ -79,14 +79,13 @@ class ActsAsTriviaGenerator < Rails::Generator::NamedBase # ControllerGenerator
       m.class_collisions "TriviasController", "TriviaAnswersController"
       m.class_collisions "TriviaTest"
 
-      # Controller, helper, views, and spec directories.
+      # Controller directories.
       m.directory 'app/views/trivias'
       m.directory 'app/views/trivia_answers'
 
-      # Controller spec, class, and helper.
+      # Controllers
       m.template 'controller.rb', 'app/controllers/trivias_controller.rb'
       m.template 'answers_controller.rb', 'app/controllers/trivia_answers_controller.rb'
-      m.template 'helper.rb', 'app/helpers/trivias_helper.rb'
       
       m.route_resources "trivias"
       m.route_trivia_answers_as_nested_resource

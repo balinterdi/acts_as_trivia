@@ -1,8 +1,7 @@
 TODO
 ====
-
-* the show action of the trivia should show the correct solution and the page should only be shown to users who have already played that trivia.
 * the trivia will have to include how many items have to be asserted (that is, the length of the trivia) since that has to be known on many screens. A sensitive default can be three. Rewrite methods where an actual number is written instead of this value.  
+* the show action of the trivia should show the correct solution and the page should only be shown to users who have already played that trivia.
 * a user should not be able to answer a question more than once
 * set up a template to generate a country-trivia site for quick testing
 

@@ -1,7 +1,11 @@
-module TriviasHelper  
+module TriviasHelper
+  def trivia_user_panel(trivia)
+    (1..trivia.length).inject("") { |out, i| out + content_tag(:div, "#{i}. #{trivia_dropdown(trivia)}")}
+    # (1..trivia.length).map { content_tag(:div, trivia_dropdown(trivia)) }
+  end
   def trivia_dropdown(trivia)
     #TODO: the get_subjects call will query all instances of a model class (e.g Country.find(:all))
-    # that may be exhaustive, even though Rails only executes it the first time and returns the cached result after
+    #That may be too exhaustive
     select_tag("#{trivia.on}[#{trivia.about}][]", options_from_collection_for_select(trivia.get_subjects, :id, trivia.displayed.to_sym))
   end
   

@@ -74,27 +74,26 @@ describe "A TriviaAnswer" do
     @user = User.create(:login => "bob")
     @trivia = Trivia.create(:on => "country", :about => "hdi", :displayed => "name", :length => 3)    
     @trivia_answer = TriviaAnswer.create(:user => @user, :trivia => @trivia)
+    
+    @iceland = Country.create(:hdi => 0.968)
+    @canada = Country.create(:hdi => 0.967)
+    @new_zealand = Country.create(:hdi => 0.944)    
   end
   
   describe "being assessed" do
-    before do
-      @trivia.expects(:assess_answer).returns(2)
-    end
-    it "should delegate assessment to the trivia" do
-      @trivia_answer.assess([1, 2, 3]).should equal(2)
+    describe "by ids" do
+      it "should return the correct score" do
+        @trivia_answer.assess([@iceland.id, @canada.id, @new_zealand.id]).should equal(3)
+      end
     end
   end
 end
 
 describe "An acts_as_trivia enabled model class" do
   before do
-    rebuild_countries_table
     Country.class_eval do
       acts_as_trivia :hdi
     end
-    @iceland = Country.create(:hdi => 0.968)
-    @canada = Country.create(:hdi => 0.967)
-    @new_zealand = Country.create(:hdi => 0.944)
   end
 
   it "should respond to the generated trivia accessor" do

@@ -1,8 +1,6 @@
 TODO
 ====
 
-* the @trivia.length.times <%= trivia_dropdown(@trivia) %> could be rewritten into a simpler <%= trivia_panel(@trivia) %> helper.
-this is one approach but so the helpers will be available to all controllers. ActionView::Base.send :include, FortiusOne::Rateable::Helper
 * the show action of the trivia should only be shown to users who have already played that trivia.
 * rewrite the trivia_answer/assess spec to actually test the result, not the delegation
 * a user should not be able to answer a question more than once
@@ -12,6 +10,7 @@ this is one approach but so the helpers will be available to all controllers. Ac
 DONE
 ====
 
+* the @trivia.length.times <%= trivia_dropdown(@trivia) %> could be rewritten into a simpler <%= trivia_panel(@trivia) %> helper.
 * autoload does not play well with Rails's autoload in dev. environment, so it has to be rewritten
 * the show action of the trivia should show the correct solution and the page should
 * the trivia will have to include how many items have to be asserted (that is, the length of the trivia) since that has to be known on many screens. A sensitive default can be three. Rewrite methods where an actual number is written instead of this value.  

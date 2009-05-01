@@ -3,6 +3,6 @@ class TriviaAnswer < ActiveRecord::Base
   belongs_to :user
   
   def assess(answer)
-    trivia.assess_answer(answer)
+    trivia.assess_answer_ids(answer)
   end
 end

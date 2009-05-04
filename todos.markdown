@@ -2,14 +2,14 @@ TODO
 ====
 
 * the show action of the trivia should only be shown to users who have already played that trivia.
-* rewrite the trivia_answer/assess spec to actually test the result, not the delegation
-* a user should not be able to answer a question more than once
 * set up a template to generate a country-trivia site for quick testing
 * find a solution so that the methods defined in TriviasHelper are only available to the trivias and trivia_answers controller. Currently, it is available to all controllers. Maybe set up an app structure in the gem like in tog plugins? (In tog plugins, controllers in the host app can extend/overwrite those defined in the plugin)
 
 DONE
 ====
 
+* a user should not be able to answer a question more than once
+* rewrite the trivia_answer/assess spec to actually test the result, not the delegation
 * the @trivia.length.times <%= trivia_dropdown(@trivia) %> could be rewritten into a simpler <%= trivia_panel(@trivia) %> helper.
 * autoload does not play well with Rails's autoload in dev. environment, so it has to be rewritten
 * the show action of the trivia should show the correct solution and the page should

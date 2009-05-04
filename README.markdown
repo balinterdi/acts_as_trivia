@@ -75,7 +75,6 @@
 
   has_many :trivia_answers
   has_many :trivias, :through => :trivia_answers
-  <!-- has_many :correct_trivia_answers, :through => :trivia_answers, :condition => { "state = ?", 'correct' }   -->
 
 * db migrations
 

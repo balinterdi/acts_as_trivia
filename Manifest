@@ -1,3 +1,4 @@
+acts_as_trivia.gemspec
 CHANGELOG
 generators/acts_as_trivia/acts_as_trivia_generator.rb
 generators/acts_as_trivia/templates/answers_controller.rb
@@ -14,6 +15,7 @@ lib/acts_as_trivia/trivia_answers_controller.rb
 lib/acts_as_trivia/trivias_helper.rb
 lib/acts_as_trivia/user.rb
 lib/acts_as_trivia.rb
+LICENSE
 Manifest
 Rakefile
 README.markdown

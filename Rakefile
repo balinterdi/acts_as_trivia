@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'echoe'
 
-Echoe.new('acts_as_trivia', '0.1.2') do |p|
+Echoe.new('acts_as_trivia', '0.1.3') do |p|
   p.description    = <<-EOS
     This gem will add the possibility to turn your Rails application into a trivia game with the ease of generating a migration. The only thing you need is a model class with a sortable attribute and this gem.
   EOS

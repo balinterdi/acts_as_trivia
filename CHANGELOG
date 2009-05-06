@@ -1,1 +1,2 @@
-v0.1  Initial release.
+v0.1.3  acts_as_trivia generator does not automatically create a trivia instance. There is acts_as_trivia_record for that.
+v0.1    Initial release.

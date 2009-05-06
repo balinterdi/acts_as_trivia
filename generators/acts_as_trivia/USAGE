@@ -11,12 +11,3 @@ Example:
         create  app/views/country_trivia/gdp.html.erb
         route   map.with_options(:controller => 'country_trivia') do ...
         
-In routes.rb it will add the following:
-
-    ActionController::Routing::Routes.draw do |map|
-      
-      map.with_options(:controller => 'country_trivia') do |trivia|
-        trivia.country_hdi_trivia '/countries/trivia/hdi', :action => "hdi"
-        trivia.country_hdi_trivia '/countries/trivia/population', :action => "population"
-        trivia.country_hdi_trivia '/countries/trivia/hdi', :action => "gdp"
-      end

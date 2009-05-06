@@ -19,7 +19,6 @@ class <%= migration_name %> < ActiveRecord::Migration
 <% end -%>
     end
 
-    Trivia.create(:on => <%= %("#{trivia_on}") %>, :about => <%= %("#{trivia_about}") %>, :displayed => <%= %("#{trivia_displayed}") %>)
   end
 
   def self.down

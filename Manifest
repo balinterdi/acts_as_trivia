@@ -9,6 +9,7 @@ generators/acts_as_trivia/USAGE
 generators/acts_as_trivia_record/acts_as_trivia_record_generator.rb
 generators/acts_as_trivia_record/templates/migration.rb
 generators/acts_as_trivia_record/USAGE
+generators/lib/acts_as_trivia_commands.rb
 lib/acts_as_trivia/trivia.rb
 lib/acts_as_trivia/trivia_answer.rb
 lib/acts_as_trivia/trivia_answers_controller.rb
@@ -16,6 +17,7 @@ lib/acts_as_trivia/trivias_helper.rb
 lib/acts_as_trivia/user.rb
 lib/acts_as_trivia.rb
 LICENSE
+Manifest
 Rakefile
 README.markdown
 spec/acts_as_trivia_spec.rb
@@ -23,4 +25,3 @@ spec/database.yml
 spec/spec_helper.rb
 tasks/acts_as_trivia.rake
 todos.markdown
-Manifest
